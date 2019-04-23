@@ -29,19 +29,22 @@ class LiveSearchForm extends React.Component {
     let list = '';
     if (this.state.results.length > 0) {
       list =
-      <ul>
+      <ul className="live-search__list">
       <ReactCSSTransitionGroup transitionName="example">
         {this.state.results.map((item, index) => (
-          <li key={index}>
-            <img src={`http://new.stocvetov.ru${item.image}`} width="80" />
-            {item.name}
+          <li key={index} className="live-search__list__item">
+            <div className="live-search__list__item__image">
+              <img src={`http://new.stocvetov.ru${item.image}`} />
+            </div>
+            <div className="live-search__list__item__name">{item.name}</div>
+            <div className="live-search__list__item__price">{item.price}</div>
           </li>
         ))}
         </ReactCSSTransitionGroup>
       </ul>;
     }
     return (
-      <div>
+      <div className="live-search">
         <input
           type="text"
           value={this.state.searchString}

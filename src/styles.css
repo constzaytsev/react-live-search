@@ -23,3 +23,42 @@
   opacity: 0.01;
   transition: opacity 300ms ease-in;
 }
+
+
+.live-search__list {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+}
+
+.live-search__list li {
+  margin: 0;
+  padding: 8px 4px;
+  border-bottom: 1px solid #EEE;
+}
+
+.live-search__list li::after {
+  display: block;
+  content: ' ';
+  clear: both;
+}
+
+.live-search__list__item__image {
+  width: 80px;
+  height: 80px;
+  margin-right: 6px;
+  overflow: hidden;
+  float: left;
+}
+
+.live-search__list__item__image > img {
+  width: 100%;
+}
+
+.live-search__list__item__name {
+  margin-bottom: 4px;
+}
+
+.live-search__list__item__price {
+  font-weight: bold;
+}
