@@ -1,7 +1,6 @@
 import React from "react";
 import ReactDOM from "react-dom";
 import axios from "axios";
-import ReactCSSTransitionGroup from 'react-addons-css-transition-group';
 
 import "./styles.css";
 
@@ -10,53 +9,65 @@ class LiveSearchForm extends React.Component {
     super(props);
     this.state = {
       searchString: "",
-      results: [],
-      showResults: "hidden"
+      results: {
+        items: []
+      }
     };
     this.handleChange = this.handleChange.bind(this);
   }
 
   handleChange(event) {
     this.setState({ searchString: event.target.value });
+    if(event.target.value.length < 3) {
+      this.setState({ results: {items: []} });
+      return;
+    }
     axios.get(`http://new.stocvetov.ru/dev/search.php?query_string=${event.target.value}`).then(({ data }) => {
-      this.setState({ showResults: 'shown' });
-      this.setState({ results: data.results });
+      this.setState({ results: data });
     });
   }
 
   render() {
 
+    let isHidden = this.state.results.items.length === 4 && this.state.results.total > 7 ? '' : 'hidden';
+
     let list = '';
-    if (this.state.results.length > 0) {
+    if (this.state.results.items.length > 0) {
       list =
       <ul className="live-search__list">
-      <ReactCSSTransitionGroup transitionName="example">
-        {this.state.results.map((item, index) => (
+        {this.state.results.items.map((item, index) => (
           <li key={index} className="live-search__list__item">
-            <div className="live-search__list__item__image">
-              <img src={`http://new.stocvetov.ru${item.image}`} />
-            </div>
-            <div className="live-search__list__item__name">{item.name}</div>
-            <div className="live-search__list__item__price">{item.price}</div>
+            <a href={item.url}>
+              <div className="live-search__list__item__image">
+                <img alt="" src={`http://new.stocvetov.ru${item.image}`} />
+              </div>
+              <div className="live-search__list__item__name">{item.name}</div>
+              <div className="live-search__list__item__price">{item.price}&nbsp;₽</div>
+            </a>
           </li>
         ))}
-        </ReactCSSTransitionGroup>
+        <li className={isHidden}>
+          <a href="#">Все результаты</a>
+        </li>
       </ul>;
     }
+
     return (
-      <div className="live-search">
+      <div className="live-search__container">
         <input
+          className="live-search__input"
+          placeholder="Поиск по сайту"
           type="text"
           value={this.state.searchString}
           onChange={this.handleChange}
         />
-        <div className={this.state.showResults}>
-        {list}
+        <div>
+          {list}
         </div>
       </div>
     );
   }
 }
 
-const rootElement = document.getElementById("root");
+const rootElement = document.getElementById("live-search");
 ReactDOM.render(<LiveSearchForm />, rootElement);
