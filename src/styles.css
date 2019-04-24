@@ -69,3 +69,24 @@
 .live-search__list__item__price {
   font-weight: bold;
 }
+
+@media (max-width: 920px) {
+  .live-search__container {
+    width: 220px;
+  }
+  .live-search__list {
+    width: 240px !important;
+  }
+}
+
+@media (max-width: 856px) {
+  .live-search__container {
+    width: 140px;
+  }
+}
+
+@media (max-width: 768px) {
+  .live-search__container {
+    width: 200px;
+  }
+}

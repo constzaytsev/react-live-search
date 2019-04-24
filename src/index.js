@@ -14,6 +14,27 @@ class LiveSearchForm extends React.Component {
       }
     };
     this.handleChange = this.handleChange.bind(this);
+    this.handleEnter = this.handleEnter.bind(this);
+    this.setWrapperRef = this.setWrapperRef.bind(this);
+    this.handleClickOutside = this.handleClickOutside.bind(this);
+  }
+
+  componentDidMount() {
+    document.addEventListener('mousedown', this.handleClickOutside);
+  }
+
+  componentWillUnmount() {
+    document.removeEventListener('mousedown', this.handleClickOutside);
+  }
+
+  setWrapperRef(node) {
+    this.wrapperRef = node;
+  }
+
+  handleClickOutside(event) {
+    if (this.wrapperRef && !this.wrapperRef.contains(event.target)) {
+      this.setState({ results: {items: []} });
+    }
   }
 
   handleChange(event) {
@@ -27,9 +48,15 @@ class LiveSearchForm extends React.Component {
     });
   }
 
+  handleEnter(event) {
+    if (event.keyCode === 13) {
+      window.location.href = `/catalog-of-product/?search_string=${this.state.searchString}`;
+    }
+  }
+
   render() {
 
-    let isHidden = this.state.results.items.length === 4 && this.state.results.total > 7 ? '' : 'hidden';
+    let isHidden = this.state.results.items.length === 4 && this.state.results.total > 4 ? '' : 'hidden';
 
     let list = '';
     if (this.state.results.items.length > 0) {
@@ -47,19 +74,20 @@ class LiveSearchForm extends React.Component {
           </li>
         ))}
         <li className={isHidden}>
-          <a href="#">Все результаты</a>
+          <a href={`/catalog-of-product/?search_string=${this.state.searchString}`}>Все результаты</a>
         </li>
       </ul>;
     }
 
     return (
-      <div className="live-search__container">
+      <div className="live-search__container" ref={this.setWrapperRef}>
         <input
           className="live-search__input"
           placeholder="Поиск по сайту"
           type="text"
           value={this.state.searchString}
           onChange={this.handleChange}
+          onKeyUp={this.handleEnter}
         />
         <div>
           {list}
