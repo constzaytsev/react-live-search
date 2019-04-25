@@ -82,9 +82,10 @@ class LiveSearchForm extends React.Component {
     return (
       <div className="live-search__container" ref={this.setWrapperRef}>
         <input
-          className="live-search__input"
-          placeholder="Поиск по сайту"
+          className="search__string"
+          placeholder="Поиск по сайту..."
           type="text"
+          name="search_string"
           value={this.state.searchString}
           onChange={this.handleChange}
           onKeyUp={this.handleEnter}
