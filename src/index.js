@@ -43,7 +43,7 @@ class LiveSearchForm extends React.Component {
       this.setState({ results: {items: []} });
       return;
     }
-    axios.get(`http://new.stocvetov.ru/dev/search.php?query_string=${event.target.value}`).then(({ data }) => {
+    axios.get(`/dev/search.php?query_string=${event.target.value}`).then(({ data }) => {
       this.setState({ results: data });
     });
   }
@@ -66,7 +66,7 @@ class LiveSearchForm extends React.Component {
           <li key={index} className="live-search__list__item">
             <a href={item.url}>
               <div className="live-search__list__item__image">
-                <img alt="" src={`http://new.stocvetov.ru${item.image}`} />
+                <img alt="" src={item.image} />
               </div>
               <div className="live-search__list__item__name">{item.name}</div>
               <div className="live-search__list__item__price">{item.price}&nbsp;₽</div>
